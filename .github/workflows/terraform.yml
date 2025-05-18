@@ -1,0 +1,41 @@
+name: Terraform CI
+
+on:
+  push:
+    paths:
+      - '**.tf'
+  pull_request:
+    paths:
+      - '**.tf'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: TFLint
+        uses: terraform-linters/setup-tflint@v4
+
+      - name: Run tflint
+        run: tflint --init && tflint
+
+      - name: tfsec (Security Analysis)
+        uses: aquasecurity/tfsec-action@v1.0.5
+
+      - name: Terraform Plan
+        run: terraform plan
