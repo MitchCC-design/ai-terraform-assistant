@@ -35,7 +35,7 @@ jobs:
         run: tflint --init && tflint
 
       - name: tfsec (Security Analysis)
-        uses: aquasecurity/tfsec-action@v1.0.5
+        uses: aquasecurity/tfsec-action@main
 
       - name: Terraform Plan
         run: terraform plan
